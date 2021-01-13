@@ -1,6 +1,7 @@
 import React from "react";
 import {TreeItemModel} from "../models";
 import {initialTree} from "../data";
+import {insertItemIntoTree, randomText} from "../utils";
 
 
 
@@ -10,7 +11,13 @@ type IterativeItem = {
 
 const IterativeExample = () => {
 
-    const [tree] = React.useState<TreeItemModel>(initialTree);
+    const [tree, setTree] = React.useState<TreeItemModel>(initialTree);
+
+    const add = (parentId: string, value: TreeItemModel) => {
+        const newTree = {...tree};
+        insertItemIntoTree(newTree, parentId, value);
+        setTree(newTree);
+    };
 
     const getItems = () => {
 
@@ -45,7 +52,10 @@ const IterativeExample = () => {
                 return (
                     <div style={{paddingLeft: 8 * element.depth}}>
                         {!!element.depth && (<div>- <span>{element.name}</span>
-                                <button onClick={() => null}>ADD</button>
+                                <button onClick={() => add(element.id, {
+                                    depth: element.depth+1,
+                                    name: randomText()
+                                })}>ADD</button>
                             </div>
                         )}
                     </div>

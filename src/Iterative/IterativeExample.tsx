@@ -1,6 +1,6 @@
 import React from "react";
 import {TreeItemModel} from "../models";
-import {initialTree} from "../data";
+import {iterationTree} from "../data";
 import {insertItemIntoTree, randomText} from "../utils";
 
 
@@ -11,7 +11,7 @@ type IterativeItem = {
 
 const IterativeExample = () => {
 
-    const [tree, setTree] = React.useState<TreeItemModel>(initialTree);
+    const [tree, setTree] = React.useState<TreeItemModel>({...iterationTree});
 
     const add = (parentId: string, value: TreeItemModel) => {
         const newTree = {...tree};

@@ -1,6 +1,6 @@
 import React from "react";
 import {TreeItemModel} from "../models";
-import {initialTree} from "../data";
+import {recursionTree} from "../data";
 import {insertItemIntoTree, randomText} from "../utils";
 
 
@@ -30,7 +30,7 @@ const TreeItem: React.FC<TreeItemProps> = (props) => {
 
 const RecursiveExample = () => {
 
-    const [tree, setTree] = React.useState<TreeItemModel>(initialTree);
+    const [tree, setTree] = React.useState<TreeItemModel>({...recursionTree});
 
     const add = (parentId: string, value: TreeItemModel) => {
         const newTree = {...tree};

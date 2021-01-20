@@ -1,7 +1,6 @@
 import React from "react";
 import {TreeItemModel} from "../models";
-import {recursionTree} from "../data";
-import {insertItemIntoTree, randomText} from "../utils";
+import {randomText} from "../utils";
 
 
 type TreeItemProps = TreeItemModel & {
@@ -15,9 +14,10 @@ const TreeItem: React.FC<TreeItemProps> = (props) => {
         <div style={{paddingLeft: 8 * depth}}>
             {!!depth && (<div>- <span>{name}</span>
                     <button onClick={() => onAdd(id, {
-                        depth: depth+1,
+                        depth: depth + 1,
                         name: randomText()
-                    })}>ADD</button>
+                    })}>ADD
+                    </button>
                 </div>
             )}
             {leafs && leafs.map((leaf) => {
@@ -28,15 +28,17 @@ const TreeItem: React.FC<TreeItemProps> = (props) => {
 };
 
 
-const RecursiveExample = () => {
+type RecursiveExampleProps = {
+    tree: any;
+    add: (parentId: string, value: TreeItemModel) => void;
+};
 
-    const [tree, setTree] = React.useState<TreeItemModel>({...recursionTree});
+const RecursiveExample: React.FC<RecursiveExampleProps> = (props) => {
 
-    const add = (parentId: string, value: TreeItemModel) => {
-        const newTree = {...tree};
-        insertItemIntoTree(newTree, parentId, value);
-        setTree(newTree);
-    };
+    const {
+        tree,
+        add
+    } = props;
 
     return (
         <div>

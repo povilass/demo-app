@@ -1,47 +1,45 @@
 import React from "react";
 import {TreeItemModel} from "../models";
-import {iterationTree} from "../data";
-import {insertItemIntoTree, randomText} from "../utils";
-
+import {randomText} from "../utils";
 
 
 type IterativeItem = {
     element: TreeItemModel;
 }
 
-const IterativeExample = () => {
+type IterativeExampleProps = {
+    tree: any;
+    add: (parentId: string, value: TreeItemModel) => void;
+};
 
-    const [tree, setTree] = React.useState<TreeItemModel>({...iterationTree});
+const IterativeExample: React.FC<IterativeExampleProps> = (props) => {
 
-    const add = (parentId: string, value: TreeItemModel) => {
-        const newTree = {...tree};
-        insertItemIntoTree(newTree, parentId, value);
-        setTree(newTree);
-    };
+    const {
+        tree,
+        add
+    } = props;
 
     const getItems = () => {
 
-        let stack: Array<IterativeItem> = [{
+        let flatTree: Array<IterativeItem> = [{
             element: {...tree}
         }];
         let stackItem = 0;
         let current;
         let children, i, len;
 
-        while (current = stack[stackItem++]) {
-            //get the arguments
+        while (current = flatTree[stackItem++]) {
+            const parentIndex = flatTree.indexOf(current);
             current = current.element;
             children = current.leafs;
-            if(children) {
+            if (children) {
                 for (i = 0, len = children.length; i < len; i++) {
-                    stack.push({
-                        element: children[i],
-                    });
+                    flatTree.splice(parentIndex + 1 + i, 0, {element: children[i]});
                 }
             }
         }
 
-        return stack;
+        return flatTree;
     };
 
     const items = getItems();
@@ -53,9 +51,10 @@ const IterativeExample = () => {
                     <div style={{paddingLeft: 8 * element.depth}}>
                         {!!element.depth && (<div>- <span>{element.name}</span>
                                 <button onClick={() => add(element.id, {
-                                    depth: element.depth+1,
+                                    depth: element.depth + 1,
                                     name: randomText()
-                                })}>ADD</button>
+                                })}>ADD
+                                </button>
                             </div>
                         )}
                     </div>
